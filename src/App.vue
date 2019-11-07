@@ -2,7 +2,7 @@
   <div id="app-container">
     <div class="background-container" :style="backgroundContainerStyle"></div>
     <div class="top-container">
-      <i class="more"></i>
+      <i class="icon-more"></i>
     </div>
     <div class="page-container">
       <router-view />
@@ -33,7 +33,7 @@ export default {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   .background-container {
-    position: absolute;
+    position: fixed;
     top: 0;
     left: 50%;
     width: px2rem(750px);
@@ -41,9 +41,6 @@ export default {
     margin-left: px2rem(-750px / 2);
     box-sizing: border-box;
     z-index: 1;
-    border: 1px solid #E6E6E6;
-    border-top: none;
-    border-bottom: none;
   }
   .page-container {
     position: relative;
@@ -54,7 +51,7 @@ export default {
     padding-bottom: px2rem(100px);
   }
   .top-container {
-    position: absolute;
+    position: fixed;
     top: 0;
     left: 50%;
     width: px2rem(750px);
@@ -63,7 +60,7 @@ export default {
     box-sizing: border-box;
     z-index: 3;
     background: red;
-    .more {
+    .icon-more {
       position: absolute;
       top: 50%;
       right: px2rem(10px);
@@ -76,7 +73,7 @@ export default {
     }
   }
   .bottom-container {
-    position: absolute;
+    position: fixed;
     bottom: 0;
     left: 50%;
     width: px2rem(750px);
