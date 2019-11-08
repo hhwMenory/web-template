@@ -1,26 +1,58 @@
 <template>
   <div id="app-container">
     <div class="background-container" :style="backgroundContainerStyle"></div>
-    <div class="top-container">
-      <i class="icon-more"></i>
+    <div class="top-container" ref="topContainer">
+      <i v-if="isEnableTopToolkit" class="icon-more"></i>
     </div>
-    <div class="page-container">
+    <div class="page-container" :style="pageContainerStyle">
       <router-view />
     </div>
-    <div class="bottom-container"></div>
+    <div class="bottom-container" ref="bottomContainer"></div>
   </div>
 </template>
 
 <script>
+import logger from '@/logger'
+import { on, debounce } from '@menory/utils'
 const app = require('./app.json')
 
 export default {
+  data () {
+    return {
+      topContainerHeight: 0,
+      bottomContainerHeight: 0,
+      isEnableTopToolkit: app.isEnableTopToolkit,
+      bottomNavs: app.bottomNavs
+    }
+  },
   computed: {
     backgroundContainerStyle () {
+      logger.info(`menory backgroundContainerStyle[App] running...`)
       return {
         backgroundColor: app.backgroundColor
       }
+    },
+    pageContainerStyle () {
+      return {
+        paddingTop: `${this.topContainerHeight}px`,
+        paddingBottom: `${this.bottomContainerHeight}px`
+      }
     }
+  },
+  mounted () {
+    logger.info(`menory mounted[App] running...`)
+    this.$nextTick(() => {
+      logger.info(`menory mounted[App] nextTick running...`)
+      this.topContainerHeight = this.$refs.topContainer ? this.$refs.topContainer.offsetHeight : 0
+      this.bottomContainerHeight = this.$refs.bottomContainer ? this.$refs.bottomContainer.offsetHeight : 0
+    })
+    on(window, 'resize', debounce(() => {
+      setTimeout(() => {
+        logger.info(`menory mounted[App] resize running...`, this.$refs.bottomContainer.offsetHeight)
+        this.topContainerHeight = this.$refs.topContainer ? this.$refs.topContainer.offsetHeight : 0
+        this.bottomContainerHeight = this.$refs.bottomContainer ? this.$refs.bottomContainer.offsetHeight : 0
+      }, 1000)
+    }, 200))
   }
 }
 </script>
@@ -29,58 +61,61 @@ export default {
 @import "@menory/common.scss";
 
 #app-container {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: px2rem(750px);
+  height: 100%;
+  margin-left: px2rem(-750px / 2);
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   .background-container {
-    position: fixed;
+    position: absolute;
     top: 0;
-    left: 50%;
-    width: px2rem(750px);
+    left: 0;
+    width: 100%;
     height: 100%;
-    margin-left: px2rem(-750px / 2);
     box-sizing: border-box;
-    z-index: 1;
+    z-index: -1;
   }
   .page-container {
-    position: relative;
-    width: px2rem(750px);
-    z-index: 2;
+    width: 100%;
+    height: 100%;
     margin: 0 auto;
-    padding-top: px2rem(50px);
-    padding-bottom: px2rem(100px);
+    box-sizing: border-box;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    background: green;
+    z-index: 2;
   }
   .top-container {
-    position: fixed;
+    position: absolute;
     top: 0;
     left: 50%;
-    width: px2rem(750px);
-    height: px2rem(50px);
+    width: 100%;
     margin-left: px2rem(-750px / 2);
     box-sizing: border-box;
-    z-index: 3;
+    z-index: 2;
     background: red;
+    overflow: hidden;
     .icon-more {
-      position: absolute;
-      top: 50%;
-      right: px2rem(10px);
       display: block;
+      float: right;
       width: px2rem(30px);
       height: px2rem(30px);
-      margin-top: px2rem(-30px / 2);
+      margin: px2rem(10px);
       border-radius: px2rem(30px);
       background: #000;
     }
   }
   .bottom-container {
-    position: fixed;
+    position: absolute;
     bottom: 0;
-    left: 50%;
-    width: px2rem(750px);
-    height: px2rem(100px);
-    margin-left: px2rem(-750px / 2);
+    left: 0;
+    width: 100%;
     box-sizing: border-box;
-    z-index: 3;
+    z-index: 2;
     background: yellow;
   }
 }

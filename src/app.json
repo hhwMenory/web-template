@@ -1,3 +1,7 @@
 {
-  "backgroundColor": "blue"
+  "backgroundColor": "blue",
+  "isEnableTopToolkit": false,
+  "bottomNavs": [
+    { "url": "http://baodu.com" }
+  ]
 }
