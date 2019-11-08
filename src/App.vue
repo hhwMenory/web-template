@@ -7,7 +7,8 @@
     <div class="page-container" :style="pageContainerStyle">
       <router-view />
     </div>
-    <div class="bottom-container" ref="bottomContainer"></div>
+    <div class="bottom-container" ref="bottomContainer" v-if="isShowBottomNav">
+    </div>
   </div>
 </template>
 
@@ -37,15 +38,19 @@ export default {
         paddingTop: `${this.topContainerHeight}px`,
         paddingBottom: `${this.bottomContainerHeight}px`
       }
+    },
+    isShowBottomNav () {
+      const paths = this.bottomNavs.map(v => v.path)
+      return paths.includes(this.$route.path)
     }
   },
   mounted () {
     logger.info(`menory mounted[App] running...`)
-    this.$nextTick(() => {
+    setTimeout(() => {
       logger.info(`menory mounted[App] nextTick running...`)
       this.topContainerHeight = this.$refs.topContainer ? this.$refs.topContainer.offsetHeight : 0
       this.bottomContainerHeight = this.$refs.bottomContainer ? this.$refs.bottomContainer.offsetHeight : 0
-    })
+    }, 0)
     on(window, 'resize', debounce(() => {
       setTimeout(() => {
         logger.info(`menory mounted[App] resize running...`, this.$refs.bottomContainer.offsetHeight)
