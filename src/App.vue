@@ -1,20 +1,22 @@
 <template>
   <div id="app-container">
     <div class="background-container" :style="backgroundContainerStyle"></div>
-    <div class="top-container" ref="topContainer">
-      <i v-if="isEnableTopToolkit" class="icon-more"></i>
+    <div class="top-container" ref="topContainer" v-if="topToolkit">
+      <i class="icon-more"></i>
     </div>
     <div class="page-container" :style="pageContainerStyle">
-      <router-view />
+      <keep-alive :include="keepAlivePages">
+        <router-view />
+      </keep-alive>
     </div>
-    <div class="bottom-container" ref="bottomContainer" v-if="isShowBottomNav">
-    </div>
+    <div class="bottom-container" ref="bottomContainer" v-if="isShowBottomNav"></div>
   </div>
 </template>
 
 <script>
 import logger from '@/logger'
 import { on, debounce } from '@menory/utils'
+
 const app = require('./app.json')
 
 export default {
@@ -22,7 +24,7 @@ export default {
     return {
       topContainerHeight: 0,
       bottomContainerHeight: 0,
-      isEnableTopToolkit: app.isEnableTopToolkit,
+      topToolkit: app.topToolkit,
       bottomNavs: app.bottomNavs
     }
   },
@@ -42,9 +44,13 @@ export default {
     isShowBottomNav () {
       const paths = this.bottomNavs.map(v => v.path)
       return paths.includes(this.$route.path)
+    },
+    keepAlivePages () {
+      return []
     }
   },
   mounted () {
+    console.log(this.$options)
     logger.info(`menory mounted[App] running...`)
     setTimeout(() => {
       logger.info(`menory mounted[App] nextTick running...`)

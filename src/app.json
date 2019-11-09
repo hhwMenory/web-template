@@ -1,6 +1,6 @@
 {
   "backgroundColor": "blue",
-  "isEnableTopToolkit": false,
+  "topToolkit": null,
   "bottomNavs": [
     { "path": "/" }
   ]
