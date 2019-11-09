@@ -1,5 +1,5 @@
 export default {
   info (...item) {
-    console.log(...item)
+    // console.log(...item)
   }
 }

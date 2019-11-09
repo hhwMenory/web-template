@@ -50,7 +50,7 @@ export default {
     }
   },
   mounted () {
-    console.log(this.$options)
+    // console.log(this.$options)
     logger.info(`menory mounted[App] running...`)
     setTimeout(() => {
       logger.info(`menory mounted[App] nextTick running...`)
