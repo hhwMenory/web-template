@@ -3,6 +3,7 @@ pipeline {
         dockerfile {
             filename "Dockerfile"
             dir "."
+            args '-v /storage-workspace/web:/web-space'
         }
     }
     stages {
@@ -18,7 +19,7 @@ pipeline {
         }
         stage('deploy') {
             steps {
-                sh "/usr/bin/rsync -R ./dist /storage-workspace/web/ && /bin/ls -l /storage-workspace/web/"
+                sh "/usr/bin/rsync -R ./dist /web-space/ && /bin/ls -l /storage-workspace/web/"
             }
         }
     }
