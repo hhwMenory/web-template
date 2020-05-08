@@ -19,7 +19,7 @@ pipeline {
         }
         stage('deploy') {
             steps {
-                sh "/usr/bin/rsync -R ./dist /web-space/ && /bin/ls -l /storage-workspace/web/"
+                sh "/usr/bin/rsync -R ./dist /web-space/ && /bin/ls -l /web-space/"
             }
         }
     }
