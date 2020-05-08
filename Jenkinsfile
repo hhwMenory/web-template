@@ -18,7 +18,7 @@ pipeline {
         }
         stage('deploy') {
             steps {
-                sh "cd dist && tar -zcvf dist.tar.gz *"
+                sh "rsync -R ./dist /storage-workspace/web/ && ls -l /storage-workspace/web/"
             }
         }
     }
